@@ -31,7 +31,7 @@ namespace SampleWebService
                 "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
             };
 
-            app.MapGet("/weatherforecast", () =>
+            app.MapGet("/weather-forecast", () =>
             {
                 var forecast = Enumerable.Range(1, 5).Select(index =>
                     new WeatherForecast
@@ -41,9 +41,15 @@ namespace SampleWebService
                         summaries[Random.Shared.Next(summaries.Length)]
                     ))
                     .ToArray();
+
                 return forecast;
             })
             .WithName("GetWeatherForecast");
+
+            app.MapGet("/system-info", () =>
+            {
+                return $"This is {Environment.MachineName} machine.";
+            });
 
             app.Run();
         }
