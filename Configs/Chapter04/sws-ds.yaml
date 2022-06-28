@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: sws-ssd-mon
+spec:
+  selector:
+    matchLabels:
+      app: sws-ssd-mon
+  template:
+    metadata:
+      labels:
+        app: sws-ssd-mon
+    spec:
+      nodeSelector:
+        disk: ssd
+      containers:
+        - name: main
+          image: amorokin/sws:v1.3.0

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: sws-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sws
+    matchExpressions:
+      - key: env
+        operator: In
+        values:
+          - prod
+  template:
+    metadata:
+      labels:
+        app: sws
+        env: prod
+    spec:
+      containers:
+        - name: sws
+          image: amorokin/sws:v1.3.0
+          ports:
+            - containerPort: 8080
