@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sws-gpu
+  labels:
+    creation_method: manual
+    env: prod
+spec:
+  nodeSelector:
+    gpu: "true"
+  containers:
+    - image: amorokin/sws:v1.2.0
+      name: sws
+      ports:
+      - containerPort: 8080
+        protocol: TCP

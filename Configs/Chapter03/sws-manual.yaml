@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sws-manual
+spec:
+  containers:
+    - image: amorokin/sws:v1.2.0
+      name: sws
+      ports:
+      - containerPort: 8080
+        protocol: TCP
