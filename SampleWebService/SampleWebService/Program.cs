@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace SampleWebService
 {
@@ -49,6 +52,15 @@ namespace SampleWebService
             app.MapGet("/system-info", () =>
             {
                 return $"This is {Environment.MachineName} machine.";
+            });
+
+            var healthProbeNumber = 0;
+
+            app.MapGet("/health", () =>
+            {
+                return ++healthProbeNumber < 5
+                    ? Results.Ok()
+                    : Results.StatusCode(StatusCodes.Status500InternalServerError);
             });
 
             app.Run();
