@@ -6,6 +6,7 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileRunArguments>-p "8080:8080"</DockerfileRunArguments>
+    <Version>$(VersionPrefix)1.4</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
