@@ -15,4 +15,4 @@ spec:
         disk: ssd
       containers:
         - name: main
-          image: amorokin/sws:v1.3.0
+          image: amorokin/sws:1.4

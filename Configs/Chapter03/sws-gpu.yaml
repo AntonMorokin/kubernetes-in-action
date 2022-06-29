@@ -9,7 +9,7 @@ spec:
   nodeSelector:
     gpu: "true"
   containers:
-    - image: amorokin/sws:v1.2.0
+    - image: amorokin/sws:1.4
       name: sws
       ports:
       - containerPort: 8080
