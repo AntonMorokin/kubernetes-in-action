@@ -22,4 +22,5 @@ spec:
         - name: sws
           image: amorokin/sws:1.4
           ports:
-            - containerPort: 8080
+            - name: http
+              containerPort: 8080

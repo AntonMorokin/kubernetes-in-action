@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -20,7 +21,16 @@ namespace SampleWebService
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Configuration.AddEnvironmentVariables("sws_");
+
             var app = builder.Build();
+
+            var pathBase = app.Configuration["networking:pathbase"];
+            if (!string.IsNullOrEmpty(pathBase))
+            {
+                app.UsePathBase(pathBase);
+                app.UseRouting();
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -61,6 +71,20 @@ namespace SampleWebService
                 return ++healthProbeNumber < 5
                     ? Results.Ok()
                     : Results.StatusCode(StatusCodes.Status500InternalServerError);
+            });
+
+            var started = DateTime.Now;
+
+            app.MapGet("/ready", () =>
+            {
+                return (DateTime.Now - started).TotalSeconds < 15
+                    ? Results.StatusCode(StatusCodes.Status503ServiceUnavailable)
+                    : Results.Ok();
+            });
+
+            app.MapFallback((HttpContext context) =>
+            {
+                return $"Can't find appropriate handler. Path base: {context.Request.PathBase}; path: {context.Request.Path}";
             });
 
             app.Run();
