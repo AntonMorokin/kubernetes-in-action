@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: sws-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sws
+  template:
+    metadata:
+      labels:
+        app: sws
+    spec:
+      containers:
+        - name: sws
+          image: amorokin/sws:1.5
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: SWS_NETWORKING__PATHBASE
+              value: /sws

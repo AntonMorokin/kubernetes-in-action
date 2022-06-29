@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sws-ing
+spec:
+  rules:
+    - host: minikube.my
+      http:
+        paths:
+          - path: /sws
+            pathType: Prefix
+            backend:
+              service:
+                name: sws-svc-np
+                port:
+                  name: http
+  ingressClassName: nginx
