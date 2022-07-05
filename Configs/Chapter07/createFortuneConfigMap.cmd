@@ -1,0 +1,1 @@
+kubectl create configmap fortune-config --from-file=files/configs
