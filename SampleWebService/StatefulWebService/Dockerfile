@@ -7,19 +7,16 @@ EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 WORKDIR /src
-COPY ["SampleWebService/SampleWebService.csproj", "SampleWebService/"]
-RUN dotnet restore "SampleWebService/SampleWebService.csproj"
+COPY ["StatefulWebService/StatefulWebService.csproj", "StatefulWebService/"]
+RUN dotnet restore "StatefulWebService/StatefulWebService.csproj"
 COPY . .
-WORKDIR "/src/SampleWebService"
-RUN dotnet build "SampleWebService.csproj" -c Release -o /app/build
+WORKDIR "/src/StatefulWebService"
+RUN dotnet build "StatefulWebService.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "SampleWebService.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "StatefulWebService.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-
-RUN apk --no-cache add curl
-
-ENTRYPOINT ["dotnet", "SampleWebService.dll"]
+ENTRYPOINT ["dotnet", "StatefulWebService.dll"]
