@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: stws
+spec:
+  serviceName: stws
+  replicas: 2
+  selector:
+    matchLabels:
+      app: stws
+  template:
+    metadata:
+      labels:
+        app: stws
+    spec:
+      containers:
+        - name: stws
+          image: amorokin/stws:1.0
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - name: data
+              mountPath: /var/data
+          env:
+            - name: STWS_DataDir
+              valueFrom:
+                configMapKeyRef:
+                  name: stws-config
+                  key: DataDir
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        resources:
+          requests:
+            storage: 4Mi
+        accessModes:
+          - ReadWriteOnce
